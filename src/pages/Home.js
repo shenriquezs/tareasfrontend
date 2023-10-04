@@ -3,22 +3,22 @@ import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 
 export default function Home() {
-  const [users, setUsers] = useState([]);
+  const [tareas, setTareas] = useState([]);
 
   const { id } = useParams();
 
   useEffect(() => {
-    loadUsers();
+    loadTareas();
   }, []);
 
-  const loadUsers = async () => {
-    const result = await axios.get("http://localhost:8080/users");
-    setUsers(result.data);
+  const loadTareas = async () => {
+    const result = await axios.get("http://localhost:8080/tareas");
+    setTareas(result.data);
   };
 
-  const deleteUser = async (id) => {
-    await axios.delete(`http://localhost:8080/user/${id}`);
-    loadUsers();
+  const deleteTarea = async (id) => {
+    await axios.delete(`http://localhost:8080/tarea/${id}`);
+    loadTareas();
   };
 
   return (
@@ -27,40 +27,40 @@ export default function Home() {
         <table className="table border shadow">
           <thead>
             <tr>
-              <th scope="col">S.N</th>
-              <th scope="col">Name</th>
-              <th scope="col">Username</th>
-              <th scope="col">Email</th>
-              <th scope="col">Action</th>
+              <th scope="col">ID</th>
+              <th scope="col">Tarea</th>
+              <th scope="col">Fecha</th>
+              <th scope="col">Vigencia</th>
+              <th scope="col">Acción</th>
             </tr>
           </thead>
           <tbody>
-            {users.map((user, index) => (
+            {tareas.map((tarea, index) => (
               <tr>
                 <th scope="row" key={index}>
                   {index + 1}
                 </th>
-                <td>{user.name}</td>
-                <td>{user.username}</td>
-                <td>{user.email}</td>
+                <td>{tarea.descripcion}</td>
+                <td>{tarea.fecha}</td>
+                <td>{tarea.vigente}</td>
                 <td>
                   <Link
                     className="btn btn-primary mx-2"
-                    to={`/viewuser/${user.id}`}
+                    to={`/viewtarea/${tarea.id}`}
                   >
-                    View
+                    Ver
                   </Link>
                   <Link
                     className="btn btn-outline-primary mx-2"
-                    to={`/edituser/${user.id}`}
+                    to={`/edittarea/${tarea.id}`}
                   >
-                    Edit
+                    Editar
                   </Link>
                   <button
                     className="btn btn-danger mx-2"
-                    onClick={() => deleteUser(user.id)}
+                    onClick={() => deleteTarea(tarea.id)}
                   >
-                    Delete
+                    Eliminar
                   </button>
                 </td>
               </tr>
